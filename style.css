@@ -1,0 +1,42 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 40px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 800px;
+}
+
+.todo-field {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.like {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    right: -70px;
+    top: 0;
+    transform: rotate(339deg);
+}
+
+.like img {
+    width: 100%;
+    height: 100%;
+}
+
+.done {
+    background: rgba(84, 239, 84, 0.33);
+}
+
+.display-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
