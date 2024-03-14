@@ -11,7 +11,7 @@ body {
     width: 800px;
 }
 
-.todo-field {
+.todo-field, .posts-field {
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -39,4 +39,8 @@ body {
     display: flex;
     gap: 8px;
     margin-bottom: 16px;
+}
+
+.tab-content {
+    margin-top: 20px;
 }
