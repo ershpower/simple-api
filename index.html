@@ -32,8 +32,8 @@
         </button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane"
-                type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled
+        <button class="nav-link" id="json-tab" data-bs-toggle="tab" data-bs-target="#json-tab-pane" type="button"
+                role="tab" aria-controls="json-tab-pane" aria-selected="false">Create post JSON
         </button>
       </li>
     </ul>
@@ -69,11 +69,24 @@
             <input type="text" class="form-control" aria-label="Sizing example input" name="body"
                    aria-describedby="inputGroup-sizing-sm">
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary create-post-form__btn">Submit</button>
         </form>
       </div>
-      <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">
-        ...
+      <div class="tab-pane fade" id="json-tab-pane" role="tabpanel" aria-labelledby="json-tab-tab" tabindex="0">
+        <form action="" id="create-post-form-json">
+          <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" name="title"
+                   aria-describedby="inputGroup-sizing-sm">
+          </div>
+          <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-sm">Body</span>
+            <input type="text" class="form-control" aria-label="Sizing example input" name="body"
+                   aria-describedby="inputGroup-sizing-sm">
+          </div>
+          <button type="submit" class="btn btn-primary create-post-form-json__btn">Submit</button>
+        </form>
+        <div class="created-post"></div>
       </div>
     </div>
   

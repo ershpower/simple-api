@@ -5,9 +5,33 @@ window.addEventListener('DOMContentLoaded', () => {
     const select = document.getElementById('select');
 
 
+    const createCard = (title, text) => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        const cardBody = document.createElement('div');
+        card.classList.add('card-body');
+
+        const cardTitle = document.createElement('h5');
+        cardTitle.classList.add('card-title');
+        cardTitle.innerText = title;
+
+        const cardText = document.createElement('p');
+        cardText.classList.add('card-text');
+        cardText.innerText = text;
+
+        cardBody.appendChild(cardTitle);
+        cardBody.appendChild(cardText);
+
+        card.appendChild(cardBody);
+
+        return card;
+    }
+
+
     // TODO start
     const showLoadingNotification = (node) => {
-        node.innerText = 'Loading...'
+        node.innerHTML = 'Loading...'
     }
 
     const clearTodoFieldChildren = (node) => {
@@ -31,24 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (todos) {
                 clearTodoFieldChildren(todoField);
                 todos.forEach((todo) => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-
-                    const cardBody = document.createElement('div');
-                    card.classList.add('card-body');
-
-                    const cardTitle = document.createElement('h5');
-                    cardTitle.classList.add('card-title');
-                    cardTitle.innerText = `Пользователь ${todo.userId}`;
-
-                    const cardText = document.createElement('p');
-                    cardText.classList.add('card-text');
-                    cardText.innerText = todo.title;
-
-                    cardBody.appendChild(cardTitle);
-                    cardBody.appendChild(cardText);
-
-                    card.appendChild(cardBody);
+                    const card = createCard(`Пользователь ${todo.userId}`, todo.title);
 
                     // добавляем лайк и красим зеленым
                     if (todo.completed) {
@@ -70,7 +77,7 @@ window.addEventListener('DOMContentLoaded', () => {
     createTodosList();
     select.addEventListener('change', (e) => {
         const value = e.target.value;
-        clearTodoFieldChildren();
+        clearTodoFieldChildren(todoField);
         createTodosList(value)
     })
 
@@ -78,34 +85,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // POSTS start
 
-    const postForm = document.getElementById('create-post-form');
     const createPostsList = async () => {
         try {
-            showLoadingNotification(postsField);
+            // showLoadingNotification(postsField);
             const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
             const posts = await response.json();
             if (posts) {
                 clearTodoFieldChildren(postsField);
                 posts.forEach((post) => {
-                    const card = document.createElement('div');
-                    card.classList.add('card');
-
-                    const cardBody = document.createElement('div');
-                    card.classList.add('card-body');
-
-                    const cardTitle = document.createElement('h5');
-                    cardTitle.classList.add('card-title');
-                    cardTitle.innerText = post.title;
-
-                    const cardText = document.createElement('p');
-                    cardText.classList.add('card-text');
-                    cardText.innerText = post.body;
-
-                    cardBody.appendChild(cardTitle);
-                    cardBody.appendChild(cardText);
-
-                    card.appendChild(cardBody);
-
+                    const card = createCard(post.title, post.body)
                     postsField.appendChild(card);
                 })
             }
@@ -117,11 +105,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     createPostsList()
 
+    // POSTS end
+
+    // POST CREATE start
+    const postForm = document.getElementById('create-post-form');
+    const submitButton = document.querySelector('.create-post-form__btn');
     postForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(postForm);
 
         try {
+            submitButton.disabled = true;
             const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
                 method: "POST",
                 body: formData,
@@ -136,10 +130,62 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         } catch (e) {
             console.log(e)
+        } finally {
+            submitButton.disabled = false;
+        }
+
+    })
+
+    // POST CREATE end
+
+    // POST CREATE JSON start
+
+    const jsonForm = document.getElementById('create-post-form-json');
+    const jsonFormBtn = document.querySelector('.create-post-form-json__btn');
+    const createdPostContainer = document.querySelector('.created-post');
+
+
+    jsonForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(jsonForm);
+
+        const formDataOb = {};
+        formData.forEach((value, key) => {
+            formDataOb[key] = value;
+        });
+        const json = JSON.stringify(formDataOb);
+
+        try {
+            jsonFormBtn.disabled = true;
+            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                method: "POST",
+                body: json,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            if (response.status === 201) {
+                const createdPost = await response.json();
+
+                const card = createCard(createdPost.title, createdPost.body);
+                createdPostContainer.appendChild(card);
+
+                const successNotification = document.createElement('div');
+                successNotification.innerText = 'Ваш созданный пост!';
+
+                createdPostContainer.appendChild(successNotification);
+
+            }
+        } catch (e) {
+            console.log(e)
+        } finally {
+            jsonFormBtn.disabled = false;
         }
 
     })
 
 
-    // POSTS end
+    // POST CREATE JSON end
+
+
 })
